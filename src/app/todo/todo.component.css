@@ -1,3 +1,84 @@
+
 th,td{
     text-align: center;
+}
+
+.card{
+    text-align: center;
+}
+
+.sw-container{
+    /* padding-left: 150px; */
+    color: white;
+    font-size: xx-large;
+    width: 220px;
+    height:120px;
+    background-image: linear-gradient(rgb(7, 85, 103),rgb(30, 155, 222));
+    margin-left: 210px;
+    border-radius: 4px;
+}
+
+.stopwatch{
+    padding-top: 10px;
+    padding-left: 33px;
+}
+
+.btn-container{
+    padding-left: 50px;
+}
+
+.btn-play-pause{
+    border: none;
+    background: none;
+    color: white;
+}
+
+/* .btn-pause{
+    border: none;
+    background: none;
+    color: white;
+} */
+
+.btn-stop{
+    border: none;
+    background: none;
+    color: white;
+}
+
+.btn-reset{
+    border: none;
+    background: none;
+    color: white;
+}
+
+.btn-done{
+    background: none;
+    border:none;
+    color: green;
+}
+
+.btn-del{
+    background: none;
+    border:none;
+    color: red;
+}
+
+.card{
+    background-image: linear-gradient(rgb(7, 85, 103),rgb(30, 155, 222));
+    color: white;
+}
+
+.heading{
+    color:rgb(7, 85, 103);
+}
+
+.btn{
+    background-image: linear-gradient(rgb(7, 85, 103),rgb(30, 155, 222));
+    color: white;
+    width: 200px;
+}
+
+.btn-add{
+    margin-left: 220px;
+    
 }

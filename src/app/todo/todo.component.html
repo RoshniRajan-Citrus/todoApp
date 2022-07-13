@@ -1,46 +1,213 @@
 <div class="container-fluid">
+  <!-- <div class="container"> -->
 
-    <div class="container">
+  <div class="card bg-info mt-4 w-100">
+    <h1 class="ps-3 pt-2 pb-2">TODO APP</h1>
+  </div>
 
-        <div class="row mt-4" style="height:500px">
+  <!-- <div class="row mt-4">
+      <div class="text-center">
+        <h1 class="heading"></h1>
+      </div>
+    </div> -->
 
-            <div class="col"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-6">
+        <div class="sw-container mt-5 shadow">
+          <div class="stopwatch">
+            <span>{{ hr }} : </span>
+            <span>{{ min }} : </span>
+            <span>{{ sec }}</span>
+          </div>
+          
+          <div class="btn-container">
+                <button class="btn-play-pause" (click)="start()">
+                  <i *ngIf="!running" class="fas fa-play"></i>
+  
+                  <i *ngIf="running" class="fas fa-pause"></i>
+                </button>
 
-            <div class="col-md-6 bg-white shadow">
+                <button
+                  class="btn-stop"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalDone"
+                  (click)="btnStop(hr, min, sec)"
+                >
+                  <i *ngIf="running"
+                    class="fas fa-stop"
+                    
+                  ></i>
+                </button>
 
-                <div class="card bg-info mt-4">
-                    <h3 class="ps-3 pt-2 pb-2">Todo List</h3>
-                </div>
-
-                <div class="shadow">
-                    <div class="input-group p-4">
-                        <input #todo type="text" class="form-control" placeholder="Enter Todo">
-                        <button (click)="addTodo(todo)" class="btn btn-outline-primary" type="button">+</button>
-                    </div>
-                </div>
-                
-                <div class="shadow mt-5">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Name</th>
-                                <th>Remove</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let i of todoList; index as no">
-                                <td>{{no+1}}</td>
-                                <td>{{i}}</td>
-                                <td>
-                                    <button (click)="deleteTodo(no)" class="btn btn-outline-danger">X</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col"></div>
+                <button
+                  class="btn-reset"
+                  (click)="reset()"
+                >
+                  <i *ngIf="running" class="fas fa-redo-alt"></i>
+                </button>
+              </div>
         </div>
+
+        <div class="btn-add">
+          <button
+            class="btn btn-info mt-3"
+            data-bs-toggle="modal"
+            data-bs-target="#modalDone"
+            (click)="addTime()"
+          >
+            Add Time
+          </button>
+        </div>
+      </div>
+      <div class="col-3"></div>
     </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-6">
+        <div class="card bg-info mt-4">
+          <h4 class="ps-3 pt-2 pb-2">Pending</h4>
+        </div>
+        <div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Task</th>
+                <th>Done</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let t of pendingList; index as no">
+                <td>{{ no + 1 }}</td>
+                <td>{{ t.task }}</td>
+                <!-- <td>{{pauseTime}}</td> -->
+                <td>
+                  <button
+                    (click)="doneTodo(t.task,no)"
+                    class="btn-done"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalDone"
+                  >
+                    <i class="fas fa-check"></i>
+                  </button>
+                </td>
+                <td>
+                  <button (click)="deleteTodo(no)" class="btn-del">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="pendingList?.length ==0">
+                <td colspan="4">{{message}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="card bg-info mt-4">
+          <h4 class="ps-3 pt-2 pb-2">Completed</h4>
+        </div>
+        <div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Task</th>
+                <th>Time</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let t of doneList; index as no">
+                <td>{{ no + 1 }}</td>
+                <td>{{ t.task }}</td>
+                <td>{{ t.time }}</td>
+                <td>
+                  <button (click)="delTodoDone(no)" class="btn-del">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="doneList?.length ==0">
+                <td colspan="4">{{message}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div>
+    <div
+      class="modal"
+      id="modalDone"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">ToDo Details</h4>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="todoForm">
+              <div>
+                <input
+                  [(ngModel)]="task"
+                  #todo
+                  type="text"
+                  name="todo"
+                  formControlName="todo"
+                  class="form-control mt-2"
+                  placeholder="Enter ToDo"
+                />
+              </div>
+              <!-- <div *ngIf="this.todoForm.get('todo')?.touched&&this.todoForm.get('todo')?.errors" style="color: red;">Invalid</div> -->
+              <div>
+                <input
+                  [(ngModel)]="stopTime"
+                  #time
+                  type="text"
+                  name="time"
+                  formControlName="time"
+                  class="form-control mt-2"
+                  placeholder="00 : 00 : 00"
+                />
+              </div>
+              <!-- <div *ngIf="this.todoForm.get('time')?.touched&&this.todoForm.get('time')?.errors" style="color: red;">Invalid</div> -->
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  (click)="addTodo(todo, time)"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- </div> -->
 </div>
