@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { addDoc, Firestore, collection } from '@angular/fire/firestore'
 
 @Component({
   selector: 'app-todo',
@@ -41,9 +42,7 @@ export class TodoComponent implements OnInit {
 
   message:any="No Records Found"
 
-  index:any;
-  
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, public firestore:Firestore) {}
 
   ngOnInit(): void {}
 
@@ -51,46 +50,52 @@ export class TodoComponent implements OnInit {
   //   this.pauseTime += event.target.value(this.pauseTime);
   // }
 
-  addTodo(todo: any, time: any) {
-    
-    var newTodo = {
-      task: todo.value,
-      time: time.value,
-    };
-
-    if (todo.value.length > 0 && time.value.length > 0) {
-      this.doneList.push(newTodo);
-
-      this.pendingList.splice(todo.value,1)
-
-      // this.pendingList.forEach((value:any,index:any) =>{
-      //   if(value == this.task)
-      //   this.pendingList.splice(index,1)
-      // })
-
-      todo.value = '';
-      time.value = '';
-      //this.pendingList.splice(todo.value,1)
-      
-      this.hr = this.min = this.sec = this.ms = '0' + 0;
-
-      
-    }
-
-    if (todo.value.length > 0 && time.value.length == 0) {
-      this.pendingList.push(newTodo);
-      todo.value = '';
-      time.value = '';
-    }
-
+  addData(value:any){
+    const dbInstance=collection(this.firestore,'todo')
+    addDoc(dbInstance,value)
+    .then(() =>{
+      alert('Data sent')
+    })
+    .catch((err)=>{
+      alert(err.message)
+    })
   }
+
+  // addTodo(todo: any, time: any) {
+  //   var newTodo = {
+  //     task: todo.value,
+  //     time: time.value,
+  //   };
+
+  //   if (todo.value.length > 0 && time.value.length > 0) {
+  //     this.doneList.push(newTodo);
+
+  //       for(var i=0;i<this.pendingList.length;i++){
+  //         if(this.pendingList[i]["task"]==todo.value){
+  //           this.pendingList.splice(i,1);
+  //         }
+  //       }
+      
+  //     todo.value = '';
+  //     time.value = '';
+    
+  //     this.hr = this.min = this.sec = this.ms = '0' + 0;
+  //   }
+
+  //   if (todo.value.length > 0 && time.value.length == 0) {
+  //     this.pendingList.push(newTodo);
+  //     todo.value = '';
+  //     time.value = '';
+  //   }
+
+  // }
 
   doneTodo(todo: any, no: any) {
     this.task = todo;
-    this.index= no
+    
     //this.task=this.pendingList.find((task:any)=>task[0]==no)
     //this.pendingList.splice(no, 1);
-    console.log(this.task,this.index);
+    
     
   }
 

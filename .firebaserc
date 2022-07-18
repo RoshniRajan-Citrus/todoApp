@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "todo-8a254": {
+      "hosting": {
+        "todoApp": [
+          "todo-8a254"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "todo-8a254"
+  }
+}
